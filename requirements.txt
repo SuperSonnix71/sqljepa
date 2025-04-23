@@ -1,0 +1,11 @@
+psycopg2-binary
+sqlalchemy
+pandas
+numpy
+torch
+scikit-learn
+tqdm
+einops
+transformers
+mlflow
+pacmap
