@@ -1,5 +1,5 @@
 import mlflow
-from db import fetch_data
+from data_loader import load_data
 from dataset import TabularDataset
 from model import SQLJEPAModel
 from trainer import Trainer
@@ -10,7 +10,8 @@ from logger import logger
 mlflow.set_tracking_uri(cfg.MLFLOW_URI)
 mlflow.start_run()
 
-df = fetch_data()
+# Load data from the configured source
+df = load_data(cfg.DATA_PATH, cfg.DATA_TYPE)
 dataset = TabularDataset(df)
 input_dim = dataset.data.shape[1]
 

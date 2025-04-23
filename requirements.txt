@@ -9,3 +9,5 @@ einops
 transformers
 mlflow
 pacmap
+pyarrow  # For Parquet file support
+fastparquet  # Alternative Parquet file support

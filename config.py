@@ -1,4 +1,8 @@
-# Database configuration
+# Data source configuration
+DATA_PATH = "data/your_data.csv"  # Path to your data file
+DATA_TYPE = "csv"  # Type of data source: 'csv', 'parquet', or 'sql'
+
+# Database configuration (only needed if DATA_TYPE is 'sql')
 DATABASE_URI = "postgresql://username:password@host:port/dbname"
 SCHEMA_NAME = "public"
 TABLE_NAME = "your_table"
