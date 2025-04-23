@@ -9,6 +9,8 @@ This repository implements SQL-JEPA (SQL Joint-Embedding Predictive Architecture
 - **[REG] Token Innovation**: Introduces a regularization token to prevent representation collapse, a crucial component for tabular data SSL.
 - **Momentum-Based Updates**: Uses exponential moving average updates for the target encoder to stabilize training.
 - **State-of-the-Art Performance**: Consistently outperforms traditional methods on tabular tasks.
+- **Enhanced Data Preprocessing**: Robust data validation, cleaning, and feature engineering pipeline.
+- **Multiple Data Source Support**: Works with CSV, Parquet, and SQL databases.
 
 ## Architecture
 
@@ -23,6 +25,35 @@ The architecture includes several key innovations:
 - **Feature Masking**: Instead of augmenting data, SQL-JEPA masks a subset of features to create self-supervised signals.
 - **[REG] Token**: A special token that's never masked and helps prevent representation collapse.
 - **Momentum Updates**: The target encoder is updated using momentum from the context encoder.
+
+## Enhanced Preprocessing Pipeline
+
+SQL-JEPA includes a robust preprocessing pipeline that can be enabled through configuration:
+
+1. **Data Validation**:
+   - Outlier detection using z-scores
+   - Missing value analysis
+   - Categorical-like numeric column detection
+   - Rare category identification
+
+2. **Data Cleaning**:
+   - IQR-based outlier removal
+   - Multiple imputation strategies (median, KNN)
+   - Robust scaling for numeric features
+   - Rare category handling for categorical features
+
+3. **Feature Engineering**:
+   - Polynomial features for numeric columns
+   - Interaction terms between numeric features
+   - Target encoding for categorical features
+   - Frequency encoding for categorical features
+   - PCA-based dimensionality reduction
+
+4. **Error Handling**:
+   - Graceful fallback mechanisms
+   - Comprehensive error logging
+   - Memory-efficient feature generation
+   - Automatic handling of edge cases
 
 ## Differences from Current Approaches
 
@@ -60,8 +91,15 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Configure the database connection in `config.py`:
+4. Configure the data source and preprocessing in `config.py`:
 ```python
+# Data source configuration
+DATA_PATH = "data/your_data.csv"  # Path to your data file
+DATA_TYPE = "csv"  # Type of data source: 'csv', 'parquet', or 'sql'
+USE_ENHANCED_PREPROCESSING = True  # Enable enhanced preprocessing
+TARGET_COL = None  # Target column for feature engineering (optional)
+
+# Database configuration (only needed if DATA_TYPE is 'sql')
 DATABASE_URI = "postgresql://username:password@host:port/dbname"
 SCHEMA_NAME = "public"
 TABLE_NAME = "your_table"
@@ -74,7 +112,13 @@ TABLE_NAME = "your_table"
 1. Prepare your dataset:
 ```python
 from dataset import TabularDataset
+from enhanced_dataset import EnhancedTabularDataset
+
+# Basic preprocessing
 dataset = TabularDataset(your_dataframe)
+
+# Enhanced preprocessing
+dataset = EnhancedTabularDataset(your_dataframe, target_col='target')
 ```
 
 2. Initialize the model:
@@ -128,6 +172,8 @@ Key parameters in `config.py`:
 - `MOMENTUM`: EMA momentum for target encoder (default: 0.996)
 - `MASK_MIN_CONTEXT`: Minimum ratio of features to keep in context (default: 0.07)
 - `MASK_MAX_CONTEXT`: Maximum ratio of features to keep in context (default: 0.15)
+- `USE_ENHANCED_PREPROCESSING`: Enable enhanced preprocessing (default: True)
+- `TARGET_COL`: Target column for feature engineering (default: None)
 
 ## Results
 
