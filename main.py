@@ -1,6 +1,7 @@
 import mlflow
 from data_loader import load_data
 from dataset import TabularDataset
+from enhanced_dataset import EnhancedTabularDataset
 from model import SQLJEPAModel
 from trainer import Trainer
 from evaluate import evaluate
@@ -12,7 +13,12 @@ mlflow.start_run()
 
 # Load data from the configured source
 df = load_data(cfg.DATA_PATH, cfg.DATA_TYPE)
-dataset = TabularDataset(df)
+
+if cfg.USE_ENHANCED_PREPROCESSING:
+    dataset = EnhancedTabularDataset(df, cfg.TARGET_COL)
+else:
+    dataset = TabularDataset(df)
+
 input_dim = dataset.data.shape[1]
 
 model = SQLJEPAModel(input_dim, cfg.EMBED_DIM, cfg.NUM_HEADS, cfg.ENCODER_LAYERS)

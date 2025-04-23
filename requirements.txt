@@ -11,3 +11,4 @@ mlflow
 pacmap
 pyarrow  # For Parquet file support
 fastparquet  # Alternative Parquet file support
+scikit-learn>=1.0.0
