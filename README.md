@@ -153,6 +153,7 @@ If you use this code in your research, please cite:
 ```bibtex
 @GitHub Code{SQLJEPA,
   Title={SQL-JEPA: Augmentation-Free Self-Supervised Learning for SQL Data},
+  Link={https://github.com/SuperSonnix71/sqljepa}
   author={Sonny Mir},
   year={2025}
 }
